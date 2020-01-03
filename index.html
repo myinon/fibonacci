@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="author" content="myinon" />
+		<meta name="description" content="This page will quickly calculate the nth number of the Fibonacci sequence." />
+		<meta name="robots" content="noindex, nofollow, noarchive, noimageindex" />
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes" />
+		<meta name="msapplication-tap-highlight" content="no" />
+		<title>Nth Fibonacci Calculator</title>
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" hreflang="en" />
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" hreflang="en" referrerpolicy="no-referrer" />
+		<link rel="stylesheet" type="text/css" href="https://rsms.me/inter/inter.css" integrity="sha256-K04OOQWsep/O1FoB5h1wK5f+x+7qCvSMeKdlJSULJZw= sha384-AKT9MKPmIq4VMihDqOB6HeDHSsXGyf92WHPCSwHAZPIVJpD8Jv6dmfTLZeLDvV4O sha512-kKcEkhp1ukL3VAing+qsdaTk8Wc/UIrwdWY0uTqj3F/Khkji/oFRblozUKWn/xP7u+a58uJakzUzwbx79gnShg==" crossorigin="anonymous" hreflang="en" referrerpolicy="no-referrer" />
+		<link rel="stylesheet" type="text/css" href="css/styles.css" hreflang="en" />
+		<script type="application/javascript">
+			try {
+				document.documentElement.classList.remove("no-js");
+				document.documentElement.classList.add("js");
+			} catch (e) {}
+		</script>
+	</head>
+	<body>
+		<main class="w-container">
+			<header class="w-page-header no-select">
+				<h1 class="w-title">N<sup>th</sup> Fibonacci Calculator</h1>
+			</header>
+			<article class="w-body">
+				<p class="w-instructions">To use this tool, simply enter the n<sup>th</sup> Fibonacci number in the sequence that you want to calculate into the small text box, and then press the &ldquo;Enter&rdquo; key. This number can be the 1<sup>st</sup>, 2<sup>nd</sup>, 10<sup>th</sup>, or even 100<sup>th</sup> number. Once the calculation has been finished, the result will be placed in the larger, scrollable text box.</p>
+				<noscript>
+					<p class="alert alert-warning">JavaScript is required to use this page. Please turn on your JavaScript.</p>
+				</noscript>
+				<section class="w-input">
+					<form name="fibonacci" action="" method="GET" enctype="application/x-www-form-urlencoded">
+						<label class="control-label" for="input">Enter the desired n<sup>th</sup> Fibonacci number to calculate:</label>
+						<input class="form-control" id="input" name="number" placeholder="​" min="0" step="1" type="number" autocomplete="off" autofocus="autofocus" required="required" aria-required="true" />
+					</form>
+				</section>
+				<section class="w-output">
+					<output>
+						<textarea class="w-result" readonly="readonly"></textarea>
+					</output>
+				</section>
+			</article>
+			<footer class="w-page-footer no-select">
+				<p>myinon.github.io/fibonacci <span class="no-wrap">• Copyright &copy; 2020 myinon</span> <span class="no-wrap">• <a href="https://www.toptal.com/designers/subtlepatterns/arches/" target="_blank" rel="nofollow noopener noreferrer" referrerpolicy="no-referrer">background by Kim Ruddock</a></span></p>
+			</footer>
+		</main>
+		<div class="w-wait">
+			<div class="w-spinner" role="status">
+				<span class="sr-only">Calculating&hellip;</span>
+			</div>
+		</div>
+		<script type="application/javascript">
+			(function (d) {
+				const worker = new Worker("js/worker.js"),
+					result = d.querySelector(".w-result"),
+					output = result.closest(".w-output"),
+					query = new URLSearchParams(location.search),
+					locale = query.has("locale") ? query.get("locale") : navigator.language;
+
+				d.fibonacci.addEventListener("submit", function (e) {
+					let number = this.number.value;
+					result.textContent = "";
+					result.classList.remove("is-invalid");
+					d.body.classList.add("w-calculating");
+					worker.postMessage({
+						locale: locale,
+						type: "calculate",
+						value: number
+					});
+
+					e.preventDefault();
+				}, { passive: false });
+
+				worker.addEventListener("message", function (e) {
+					let { type, value } = e.data;
+
+					if (type === "result") {
+						result.textContent = value;
+					} else if (type === "error") {
+						result.textContent = value;
+						result.classList.add("is-invalid");
+					}
+
+					d.body.classList.remove("w-calculating");
+					output.classList.add("has-result");
+				}, { passive: true });
+			}(document));
+		</script>
+	</body>
+</html>
