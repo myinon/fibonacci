@@ -194,6 +194,11 @@ textarea.is-invalid:focus {
 	outline: 0 none;
 }
 
+.form-control:disabled {
+	background-color: #e9ecef;
+	opacity: 1;
+}
+
 #input {
 	text-align: end;
 }
