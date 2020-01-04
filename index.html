@@ -90,7 +90,7 @@
 					d.body.classList.remove("w-calculating");
 					output.classList.add("has-result");
 
-					Promise.resolve(result).then((r) => r.focus());
+					Promise.resolve(result).then((r) => (r.focus(), r.scroll({ top: 0, behavior: "instant" })));
 				}, { passive: true });
 			}(document));
 		</script>
