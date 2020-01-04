@@ -86,10 +86,11 @@
 						result.classList.add("is-invalid");
 					}
 
-					result.focus();
 					d.fibonacci.number.disabled = false;
 					d.body.classList.remove("w-calculating");
 					output.classList.add("has-result");
+
+					Promise.resolve(result).then((r) => r.focus());
 				}, { passive: true });
 			}(document));
 		</script>
