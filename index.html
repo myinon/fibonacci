@@ -88,12 +88,7 @@
 					d.body.classList.remove("w-calculating");
 					output.classList.add("has-result");
 
-					requestAnimationFrame(() => {
-						requestAnimationFrame(() => {
-							result.scroll({ top: 0, behavior: "instant" });
-							result.focus();
-						});
-					});
+					Promise.resolve(result).then((r) => (r.focus(), r.setSelectionRange(0, 0)));
 				}, { passive: true });
 			}(document));
 		</script>
