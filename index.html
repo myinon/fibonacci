@@ -61,6 +61,9 @@
 
 				d.fibonacci.addEventListener("submit", function (e) {
 					let number = this.number.value;
+					this.number.disabled = true;
+					this.number.blur();
+
 					result.textContent = "";
 					result.classList.remove("is-invalid");
 					d.body.classList.add("w-calculating");
@@ -83,6 +86,8 @@
 						result.classList.add("is-invalid");
 					}
 
+					result.focus();
+					d.fibonacci.number.disabled = false;
 					d.body.classList.remove("w-calculating");
 					output.classList.add("has-result");
 				}, { passive: true });
