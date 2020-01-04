@@ -79,18 +79,21 @@
 				worker.addEventListener("message", function (e) {
 					let { type, value } = e.data;
 
-					if (type === "result") {
-						result.textContent = value;
-					} else if (type === "error") {
-						result.textContent = value;
+					if (type === "error") {
 						result.classList.add("is-invalid");
 					}
+					result.textContent = value;
 
 					d.fibonacci.number.disabled = false;
 					d.body.classList.remove("w-calculating");
 					output.classList.add("has-result");
 
-					Promise.resolve(result).then((r) => (r.focus(), r.scroll({ top: 0, behavior: "instant" })));
+					requestAnimationFrame(() => {
+						requestAnimationFrame(() => {
+							result.scroll({ top: 0, behavior: "instant" });
+							result.focus();
+						});
+					});
 				}, { passive: true });
 			}(document));
 		</script>
