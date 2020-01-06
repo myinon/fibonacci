@@ -1,4 +1,11 @@
-self.importScripts("fibonacci.js");
+const jsbi = !("BigInt" in self);
+
+if (!jsbi) {
+	self.importScripts("fibonacci.js");
+} else {
+	self.importScripts("jsbi/jsbi.mjs");
+	self.importScripts("jsbi/jsbi_fibonacci.js");
+}
 
 self.addEventListener("message", function (e) {
 	const { locale, type, value } = e.data;
@@ -10,7 +17,9 @@ self.addEventListener("message", function (e) {
 
 			self.postMessage({
 				type: "result",
-				value: fb.result.toLocaleString(locale)
+				value: jsbi ?
+					fb.result.toString() :
+					fb.result.toLocaleString(locale)
 			});
 		} catch (x) {
 			self.postMessage({ type: "error", value: x.message });
