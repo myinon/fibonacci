@@ -134,6 +134,7 @@ output {
 	background-clip: padding-box;
 	background-color: white;
 	border: 0.0625rem solid #ced4da;
+	border-radius: 0;
 	color: #212529;
 	display: block;
 	font-size: 87.5%;
@@ -158,6 +159,7 @@ output {
 	background-clip: padding-box;
 	background-color: white;
 	border: 0.0625rem solid #ced4da;
+	border-radius: 0;
 	color: #495057;
 	display: block;
 	font-size: 1rem;
